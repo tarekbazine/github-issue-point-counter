@@ -1,0 +1,23 @@
+{
+  "name": "Github issue point counter",
+  "description": "A chrome extensions for counting Github issue point/estimate with a flexible options and customizations.",
+  "version": "1.0",
+  "manifest_version": 3,
+  "content_scripts": [
+    {
+      "run_at": "document_end",
+      "matches": ["https://*.github.com/*"],
+      "js": ["injected.js"],
+      "css": ["injected.css"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
