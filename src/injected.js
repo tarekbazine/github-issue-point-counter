@@ -1,11 +1,12 @@
 // todo
 //  1.option , default
 
-const debug = true;
-
-function log(...x) {
-    if (debug) {
-        console.log('Github-issue-point-counter : ', x);
+const isDebug = true;
+let log;
+if (isDebug) {
+    log = console.log.bind(window.console, '[Github-issue-point-counter]')
+} else {
+    log = function () {
     }
 }
 
@@ -70,11 +71,11 @@ function main() {
         }
 
 
-        let newElement = document.createElement('span');
-        newElement.classList.add(...ESTIMATION_BADGE_CSS_CLASSLIST);
-        newElement.innerHTML = estimationSum.toString();
-        var myCurrentElement = column.querySelector(GITHUB_PROJECT_COLUMN_CARDS_COUNTER_SELECTOR);
-        insertAfter(newElement, myCurrentElement);
+        let estimationBadgeElement = document.createElement('span');
+        estimationBadgeElement.classList.add(...ESTIMATION_BADGE_CSS_CLASSLIST);
+        estimationBadgeElement.innerHTML = estimationSum.toString();
+        var githubCounterBadgeElement = column.querySelector(GITHUB_PROJECT_COLUMN_CARDS_COUNTER_SELECTOR);
+        insertAfter(estimationBadgeElement, githubCounterBadgeElement);
 
 
     }
