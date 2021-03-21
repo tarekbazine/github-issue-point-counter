@@ -1,0 +1,13 @@
+.ExtensionEstimation__badge {
+    display: inline-block;
+    min-width: 20px;
+    padding: 0 6px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    color: #fff;
+    text-align: center;
+    background-color: #4caf50;
+    border: 1px solid transparent;
+    border-radius: 2em;
+}

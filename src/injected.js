@@ -21,9 +21,17 @@ function callBackNotEstimatedCard(element) {
     element.style.background = '#ffebee';
 }
 
+function insertAfter(newElement, referenceElement) {
+    referenceElement.parentNode.insertBefore(newElement, referenceElement.nextSibling);
+}
+
 function main() {
 
     const GITHUB_PROJECT_COLUMN_SELECTOR = 'div.project-column';
+    const GITHUB_PROJECT_COLUMN_CARDS_COUNTER_SELECTOR = 'span.Counter';
+    const ESTIMATION_BADGE_CSS_CLASSLIST = ['ExtensionEstimation__badge', 'position-relative', 'v-align-middle', 'ml-1'];
+    // <span title="6"
+    //       className="Counter js-column-card-count Counter--secondary position-relative v-align-middle ml-1">6</span>
     const GITHUB_ISSUE_CARD_SELECTOR = 'article';
     const GITHUB_ISSUE_CARD_LABEL_ATTRIBUTE = 'data-card-label';
     const ESTIMATION_REGX = /time: (?<estimatoin>\d+) hours/i;
@@ -33,6 +41,8 @@ function main() {
     log(projectColumns);
 
     for (let column of projectColumns) {
+
+        let estimationSum = 0;
 
         const cards = column.querySelectorAll(GITHUB_ISSUE_CARD_SELECTOR);
         for (let card of cards) {
@@ -44,18 +54,28 @@ function main() {
                 continue;
             }
 
-            const estimationLabel = cardLabels.map((label) => {
+            const estimation = cardLabels.map((label) => {
                 const found = label.match(ESTIMATION_REGX);
                 return found?.groups?.estimatoin;
             }).find((estimation) => estimation != null);
 
-            if (!estimationLabel) {
+            if (!estimation) {
                 callBackNotEstimatedCard(card);
                 continue;
             }
 
-            log(estimationLabel, card, cardLabels);
+            log(estimation, card, cardLabels);
+
+            estimationSum = estimationSum + parseInt(estimation);
         }
+
+
+        let newElement = document.createElement('span');
+        newElement.classList.add(...ESTIMATION_BADGE_CSS_CLASSLIST);
+        newElement.innerHTML = estimationSum.toString();
+        var myCurrentElement = column.querySelector(GITHUB_PROJECT_COLUMN_CARDS_COUNTER_SELECTOR);
+        insertAfter(newElement, myCurrentElement);
+
 
     }
 
