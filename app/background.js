@@ -1,5 +1,5 @@
 const DEFAULT_OPTIONS = {
-    isDebug: true,
+    isDebug: false,
     highlightNonEstimated: true,
     ESTIMATION_REGX_STR: "time: (?<estimation>\\d+) hours"
 }

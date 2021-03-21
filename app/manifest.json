@@ -6,9 +6,15 @@
   "content_scripts": [
     {
       "run_at": "document_end",
-      "matches": ["https://*.github.com/*"],
-      "js": ["injected.js"],
-      "css": ["injected.css"]
+      "matches": [
+        "https://*.github.com/*"
+      ],
+      "js": [
+        "injected.js"
+      ],
+      "css": [
+        "injected.css"
+      ]
     }
   ],
   "background": {
@@ -18,6 +24,14 @@
     "storage"
   ],
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": {
+      "32": "assets/images/icon32.png",
+      "128": "assets/images/icon144.png"
+    }
+  },
+  "icons": {
+    "32": "assets/images/icon32.png",
+    "128": "assets/images/icon144.png"
   }
 }
