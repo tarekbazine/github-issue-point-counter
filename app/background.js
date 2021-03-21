@@ -1,7 +1,7 @@
 const DEFAULT_OPTIONS = {
     isDebug: false,
     highlightNonEstimated: true,
-    ESTIMATION_REGX_STR: "time: (?<estimation>\\d+) hours"
+    ESTIMATION_REGX_STR: "time: (?<estimation>\\d+) hour.*"
 }
 
 // export const DEFAULT_OPTIONS_KEYS = Object.keys(DEFAULT_OPTIONS);

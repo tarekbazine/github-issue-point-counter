@@ -10,6 +10,7 @@ Features / RoadMap :
 - [x] highlight non-estimated issues.
 - [x] custom regex for count estimations. _( Note : the regex should have the named group `estimation` - ex : `(?<estimation>\d+)` )_
 - [x] enable Debug logs in console.
+- [ ] reload on github project search/filter change.
 - [ ] migrate code base to TS and split modules.
 - [ ] count estimations which is been indicated in ticket titles.
 - [ ] count estimations which is been indicated in tickets body.
