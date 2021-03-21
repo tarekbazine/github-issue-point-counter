@@ -18,3 +18,7 @@ Features / RoadMap :
 - [ ] customize styling.
 - [ ] Other browsers.
 
+---
+_Feel free to star the repo if you like it._
+
+![screen shot 1](https://github.com/tarekbazine/github-issue-point-counter/blob/main/chrome_extension_assets/screenshot_1_v0.1.jpg?raw=true)
