@@ -1,6 +1,12 @@
-let color = '#3aa757';
+const DEFAULT_OPTIONS = {
+    isDebug: true,
+    highlightNonEstimated: true,
+    ESTIMATION_REGX_STR: "time: (?<estimation>\\d+) hours"
+}
+
+// export const DEFAULT_OPTIONS_KEYS = Object.keys(DEFAULT_OPTIONS);
 
 chrome.runtime.onInstalled.addListener(() => {
-    chrome.storage.sync.set({ color });
-    console.log('Default background color set to %cgreen', `color: ${color}`);
+    chrome.storage.sync.set(DEFAULT_OPTIONS);
+    console.log('Default options are set', `options: ${DEFAULT_OPTIONS}`);
 });

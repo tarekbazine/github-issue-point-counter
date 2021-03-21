@@ -1,41 +1,62 @@
-// todo
-//  1.option , default
+// TODO : migrate to TS ( to use modules import ..)
 
-const isDebug = true;
-let log;
-if (isDebug) {
-    log = console.log.bind(window.console, '[Github-issue-point-counter]')
-} else {
-    log = function () {
-    }
-}
+const OPTIONS_KEYS = ['isDebug', 'highlightNonEstimated', 'ESTIMATION_REGX_STR'];
 
-const GITHUB_CARD_TYPE_ATTRIBUTE = 'data-card-is';
+async function main() {
 
-function callBackNotEstimatedCard(element) {
-    const types = JSON.parse(element.getAttribute(GITHUB_CARD_TYPE_ATTRIBUTE));
-
-    if (!types.includes('issue')) {
-        return;
+    function getOptions() {
+        return new Promise(resolve =>
+            chrome.storage.sync.get(OPTIONS_KEYS, options => resolve(options))
+        );
     }
 
-    element.style.background = '#ffebee';
-}
+    const OPTIONS = await getOptions();
 
-function insertAfter(newElement, referenceElement) {
-    referenceElement.parentNode.insertBefore(newElement, referenceElement.nextSibling);
-}
+    console.log(OPTIONS);
 
-function main() {
+// ------------------------------------------------------------------------
+
+    let log;
+    if (OPTIONS.isDebug) {
+        log = console.log.bind(window.console, '[Github-issue-point-counter]')
+    } else {
+        log = function () {
+        }
+    }
+
+// ------------------------------------------------------------------------
+
+    const GITHUB_CARD_TYPE_ATTRIBUTE = 'data-card-is';
+
+    function callBackNotEstimatedCard(element) {
+        if (!OPTIONS.highlightNonEstimated) {
+            return;
+        }
+
+        const types = JSON.parse(element.getAttribute(GITHUB_CARD_TYPE_ATTRIBUTE));
+
+        if (!types.includes('issue')) {
+            return;
+        }
+
+        element.style.background = '#ffebee';
+    }
+
+// ------------------------------------------------------------------------
+
+    function insertAfter(newElement, referenceElement) {
+        referenceElement.parentNode.insertBefore(newElement, referenceElement.nextSibling);
+    }
+
+// ------------------------------------------------------------------------
 
     const GITHUB_PROJECT_COLUMN_SELECTOR = 'div.project-column';
     const GITHUB_PROJECT_COLUMN_CARDS_COUNTER_SELECTOR = 'span.Counter';
     const ESTIMATION_BADGE_CSS_CLASSLIST = ['ExtensionEstimation__badge', 'position-relative', 'v-align-middle', 'ml-1'];
-    // <span title="6"
-    //       className="Counter js-column-card-count Counter--secondary position-relative v-align-middle ml-1">6</span>
     const GITHUB_ISSUE_CARD_SELECTOR = 'article';
     const GITHUB_ISSUE_CARD_LABEL_ATTRIBUTE = 'data-card-label';
-    const ESTIMATION_REGX = /time: (?<estimatoin>\d+) hours/i;
+    const ESTIMATION_REGX = new RegExp(OPTIONS.ESTIMATION_REGX_STR, 'i');
+    log('regex', ESTIMATION_REGX.toString(), ESTIMATION_REGX)
 
     const projectColumns = document.querySelectorAll(GITHUB_PROJECT_COLUMN_SELECTOR);
 
@@ -57,7 +78,7 @@ function main() {
 
             const estimation = cardLabels.map((label) => {
                 const found = label.match(ESTIMATION_REGX);
-                return found?.groups?.estimatoin;
+                return found?.groups?.estimation;
             }).find((estimation) => estimation != null);
 
             if (!estimation) {
@@ -70,17 +91,33 @@ function main() {
             estimationSum = estimationSum + parseInt(estimation);
         }
 
-
-        let estimationBadgeElement = document.createElement('span');
+        const estimationBadgeElement = document.createElement('span');
         estimationBadgeElement.classList.add(...ESTIMATION_BADGE_CSS_CLASSLIST);
         estimationBadgeElement.innerHTML = estimationSum.toString();
-        var githubCounterBadgeElement = column.querySelector(GITHUB_PROJECT_COLUMN_CARDS_COUNTER_SELECTOR);
+        const oldEstimationBadgeElement = column.querySelector('span.' + ESTIMATION_BADGE_CSS_CLASSLIST[0]);
+        oldEstimationBadgeElement?.remove();
+        const githubCounterBadgeElement = column.querySelector(GITHUB_PROJECT_COLUMN_CARDS_COUNTER_SELECTOR);
         insertAfter(estimationBadgeElement, githubCounterBadgeElement);
-
-
     }
-
 
 }
 
+// ------------------------------------------------------------------------
+
+// since github loads cards async
 setTimeout(main, 5000);
+
+// ------------------------------------------------------------------------
+
+chrome.storage.onChanged.addListener(function (changes) {
+
+    for (var key in changes) {
+
+        if (OPTIONS_KEYS.includes(key)) {
+            location.reload();
+
+            break;
+        }
+
+    }
+});
