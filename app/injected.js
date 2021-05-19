@@ -76,10 +76,12 @@ async function main() {
                 continue;
             }
 
-            const estimation = cardLabels.map((label) => {
+            const estimation = cardLabels.reduce((accumulator, label) => {
                 const found = label.match(ESTIMATION_REGX);
-                return found?.groups?.estimation;
-            }).find((estimation) => estimation != null);
+                const number = Number(found?.groups?.estimation);
+                if (isNaN(number)) return accumulator;
+                return accumulator + number;
+            }, 0);
 
             if (!estimation) {
                 callBackNotEstimatedCard(card);
@@ -88,7 +90,7 @@ async function main() {
 
             log(estimation, card, cardLabels);
 
-            estimationSum = estimationSum + parseInt(estimation);
+            estimationSum = estimationSum + estimation;
         }
 
         const estimationBadgeElement = document.createElement('span');
