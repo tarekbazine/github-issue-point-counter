@@ -1,6 +1,6 @@
 # github-issue-point-counter
 
-A chrome extensions for counting Github issue point/estimate with a flexible options and customizations.
+[A chrome extensions](https://chrome.google.com/webstore/detail/github-issue-point-counte/achbhcfdbmkmliohhelfeiogepkafekg) for counting Github issue point/estimate with a flexible options and customizations.
 
 _Feature request and PR are more than welcome :D_
 
@@ -22,3 +22,8 @@ Features / RoadMap :
 _Feel free to star the repo if you like it._
 
 ![screen shot 1](https://github.com/tarekbazine/github-issue-point-counter/blob/main/chrome_extension_assets/screenshot_1_v0.1.jpg?raw=true)
+
+
+----
+
+[CHANGELOG](CHANGELOG.md)
